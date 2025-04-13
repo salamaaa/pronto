@@ -15,15 +15,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http
+        return http
                 .csrf(configurer -> configurer.disable()) //disable csrf
                 .authorizeHttpRequests(
                 request -> request.anyRequest().authenticated()) //any request should be authenticated
                 //.formLogin(Customizer.withDefaults()) //for the browser form login stick with the built-in form
                 .httpBasic(Customizer.withDefaults())  //for the rest api client stick with the default also
                 .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        return http.build();
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .build();
     }
 
 }
