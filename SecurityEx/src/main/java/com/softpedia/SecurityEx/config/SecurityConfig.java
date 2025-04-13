@@ -7,6 +7,10 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -22,8 +26,27 @@ public class SecurityConfig {
                 //.formLogin(Customizer.withDefaults()) //for the browser form login stick with the built-in form
                 .httpBasic(Customizer.withDefaults())  //for the rest api client stick with the default also
                 .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService(){
+        UserDetails mohamed = User
+                .withDefaultPasswordEncoder()
+                .username("mohamed")
+                .password("123*654")
+                .roles("ADMIN")
+                .build();
+
+        UserDetails mona = User
+                .withDefaultPasswordEncoder()
+                .username("mona")
+                .password("123*654")
+                .roles("EMP")
+                .build();
+
+        return new InMemoryUserDetailsManager(mohamed,mona);
     }
 
 }
